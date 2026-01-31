@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,10 @@ export default function SectionEditor({ section, data, onChange }) {
 
     // --- RENDERERS ---
 
+    if (section === 'source') {
+        return <SourceEditor data={data} onChange={onChange} />;
+    }
+
     if (section === 'config') {
         return (
             <div className="space-y-6 animate-fadeIn">
@@ -51,6 +56,31 @@ export default function SectionEditor({ section, data, onChange }) {
                         </SelectContent>
                     </Select>
                 </div>
+
+                <div className="space-y-2">
+                    <Label>Visibility</Label>
+                    <Select value={data?.visibility || 'public'} onValueChange={(v) => handleChange('visibility', v)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Visibility" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="public">Public (Listed)</SelectItem>
+                            <SelectItem value="private">Private (Hidden & Password)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {data?.visibility === 'private' && (
+                    <div className="space-y-2 animate-fadeIn pl-4 border-l-2 border-primary/20">
+                        <Label>Access Password</Label>
+                        <Input
+                            value={data?.password || ''}
+                            onChange={(e) => handleChange('password', e.target.value)}
+                            placeholder="Set a password..."
+                        />
+                        <p className="text-xs text-gray-500">Guests will need this URL parameter: <code>?auth=your-password</code></p>
+                    </div>
+                )}
 
                 <div className="space-y-2">
                     <ColorPicker
@@ -215,4 +245,41 @@ export default function SectionEditor({ section, data, onChange }) {
     }
 
     return <div>Select a section</div>;
+}
+
+function SourceEditor({ data, onChange }) {
+    const [value, setValue] = useState(JSON.stringify(data, null, 2));
+    const [error, setError] = useState(null);
+
+    const handleSave = () => {
+        try {
+            const parsed = JSON.parse(value);
+            onChange('ROOT', null, parsed);
+        } catch (e) {
+            setError(e.message);
+        }
+    };
+
+    return (
+        <div className="space-y-4 h-full flex flex-col animate-fadeIn">
+            <div className="flex justify-between items-center">
+                <Label>Raw Configuration (JSON)</Label>
+                <Button onClick={handleSave} size="sm" variant={error ? "destructive" : "default"}>Apply Changes</Button>
+            </div>
+            {error && <div className="p-2 bg-red-50 text-red-500 text-xs rounded border border-red-200">{error}</div>}
+            <textarea
+                className="flex-1 w-full min-h-[500px] font-mono text-xs p-4 border rounded-md bg-slate-50 text-slate-800 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
+                value={value}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    try {
+                        JSON.parse(e.target.value);
+                        setError(null);
+                    } catch (e) {
+                        setError("Invalid JSON");
+                    }
+                }}
+            />
+        </div>
+    );
 }

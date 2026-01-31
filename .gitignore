@@ -42,3 +42,5 @@ next-env.d.ts
 
 # local uploads
 public/uploads
+data/*.json
+project_context/

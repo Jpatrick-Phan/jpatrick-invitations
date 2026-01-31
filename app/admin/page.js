@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Save, Plus, Loader2, Lock } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Loader2, Lock, Share2, Globe, Eye } from 'lucide-react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import SectionEditor from '@/components/admin/SectionEditor';
+import ShareModal from '@/components/admin/ShareModal';
 import { toast } from "sonner";
 
 export default function AdminPage() {
@@ -22,6 +23,7 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [newCardId, setNewCardId] = useState('');
+    const [shareCard, setShareCard] = useState(null);
 
     // --- EFFECTS ---
     useEffect(() => {
@@ -103,6 +105,15 @@ export default function AdminPage() {
         });
         setNewCardId('');
         loadCards();
+        toast.success("New event created!");
+    };
+
+    const handlePreview = (card) => {
+        let url = `/${card.id}`;
+        if (card.config?.visibility === 'private' && card.config?.password) {
+            url += `?auth=${card.config.password}`;
+        }
+        window.open(url, '_blank');
     };
 
     const save = async () => {
@@ -113,7 +124,7 @@ export default function AdminPage() {
             headers: { 'Content-Type': 'application/json' }
         });
         setSaving(false);
-        // We can add a toast notification here later
+        toast.success("Changes saved successfully!");
     };
 
     // --- HANDLERS ---
@@ -121,6 +132,11 @@ export default function AdminPage() {
     // Update data for a specific section field
     // e.g. section='hero', field='title', value='New Title'
     const handleSectionChange = (section, field, value) => {
+        if (section === 'ROOT') {
+            setData(value);
+            return;
+        }
+
         // Special handling for Theme which is top-level but edited in config
         if (section === 'config' && field === 'theme') {
             setData(prev => ({
@@ -205,33 +221,57 @@ export default function AdminPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {cards.map((card) => (
-                            <Card key={card.id} className="cursor-pointer hover:shadow-xl transition-all border-none shadow-sm group" onClick={() => loadCard(card.id)}>
+                            <Card key={card.id} className="cursor-pointer hover:shadow-xl transition-all border-none shadow-sm group relative bg-white" onClick={() => loadCard(card.id)}>
                                 <div className="h-32 bg-gray-200 rounded-t-xl overflow-hidden relative">
                                     {/* Placeholder preview */}
                                     {card.hero?.image && <img src={card.hero.image} className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />}
                                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+
+                                    {/* Share Button (Overlay) */}
+                                    <Button
+                                        variant="secondary"
+                                        size="icon"
+                                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 hover:bg-white text-blue-600 shadow-sm"
+                                        onClick={(e) => { e.stopPropagation(); setShareCard(card); }}
+                                    >
+                                        <Share2 size={16} />
+                                    </Button>
                                 </div>
-                                <CardHeader>
+                                <CardHeader className="pb-2">
                                     <div className="flex justify-between items-start">
-                                        <CardTitle className="capitalize">{card.id}</CardTitle>
-                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">{card.theme}</span>
+                                        <div>
+                                            <CardTitle className="capitalize text-lg">{card.config?.title || card.id}</CardTitle>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-xs text-gray-400 font-mono">/{card.id}</span>
+                                                {card.config?.visibility === 'private' ?
+                                                    <span className="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-200"><Lock size={8} /> Private</span>
+                                                    :
+                                                    <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200"><Globe size={8} /> Public</span>
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
-                                    <CardDescription>{card.hero?.names || 'No Name'}</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="flex gap-2 mt-2">
-                                        <Button variant="outline" size="sm" className="w-full">Edit</Button>
-                                        {/* External link to public page */}
-                                        <Button variant="ghost" size="sm" className="w-full" onClick={(e) => {
-                                            e.stopPropagation();
-                                            window.open(`/${card.id}`, '_blank');
-                                        }}>View Live</Button>
+                                    <p className="text-sm text-gray-500 mb-4 line-clamp-1">{card.config?.names || 'No names set'}</p>
+                                    <div className="flex gap-2">
+                                        <Button variant="outline" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); loadCard(card.id); }}>
+                                            Edit Design
+                                        </Button>
+                                        <Button variant="ghost" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); handlePreview(card); }}>
+                                            <Eye size={14} className="mr-1" /> Preview
+                                        </Button>
                                     </div>
                                 </CardContent>
                             </Card>
                         ))}
                     </div>
                 </div>
+                <ShareModal
+                    open={!!shareCard}
+                    onOpenChange={(open) => !open && setShareCard(null)}
+                    card={shareCard}
+                />
             </div>
         );
     }
@@ -285,8 +325,13 @@ export default function AdminPage() {
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 min-h-[500px]">
                             <SectionEditor
                                 section={activeSection}
-                                data={activeSection === 'config' ? { ...data.config, theme: data.theme } : data[activeSection]}
+                                data={
+                                    activeSection === 'config' ? { ...data.config, theme: data.theme } :
+                                        activeSection === 'source' ? data :
+                                            data[activeSection]
+                                }
                                 onChange={handleSectionChange}
+                                cardId={selectedCardId}
                             />
                         </div>
                     </div>

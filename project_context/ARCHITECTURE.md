@@ -3,52 +3,41 @@
 ## 1. Tech Stack
 -  **Core**: Next.js 14+ (App Router).
 -  **Language**: JavaScript (ES6+).
--  **Styling**: CSS Modules (`.module.css`) + Global CSS Variables (Theming).
--  **State Management**: React `useState` / `useContext` (for global states like Music Player).
--  **Icons**: `lucide-react` (Lightweight SVG icons).
--  **Fonts**: `next/font` (Google Fonts: Playfair Display, Great Vibes, Inter).
+-  **Styling**: Tailwind CSS v4 + Shadcn UI (Radix Primitives).
+-  **State Management**: React `useState` / `useContext` (Music Player).
+-  **Icons**: `lucide-react`.
+-  **Fonts**: `next/font` (Inter, Playfair Display, Great Vibes).
+-  **Notifications**: `sonner` (Toast).
 
 ## 2. Directory Structure
 ```
 /
 ├── app/
-│   ├── layout.js       # Root Layout (Music Player defined here to persist)
-│   ├── page.js         # Main Entry (Wedding Theme Default)
-│   ├── graduation/     # Route for Graduation Theme Demo
-│   │   └── page.js
-│   └── globals.css     # Global Styles (Reset + Variables)
+│   ├── layout.js       # Root Layout (Music Player, Toaster)
+│   ├── page.js         # Landing Page (List of Events)
+│   ├── [slug]/         # Dynamic Route for Cards (Wedding/Graduation/etc)
+│   ├── admin/          # Admin Dashboard & Builder
+│   ├── api/            # API Routes (Data, Upload, Auth)
+│   └── globals.css     # Global Styles (HSL Variables)
 ├── components/
-│   ├── ui/             # Reusable basic atoms (Button, Input, Modal)
-│   ├── sections/       # Major page sections (Hero, Story, Gallery, RSVP)
-│   │   ├── Hero.js
-│   │   ├── EventTime.js
-│   │   └── ...
-│   └── icons/          # Custom SVGs if needed
+│   ├── ui/             # Shadcn Components (Button, Card, Dialog, etc.)
+│   ├── admin/          # Admin-specific Components (MediaLibrary, SectionEditor)
+│   └── sections/       # Public-facing Sections (Hero, Story, Gallery, RSVP)
+├── data/               # JSON Storage for Cards (wedding.json, graduation.json)
 ├── lib/
-│   ├── data.js         # Static data content (Mock DB)
-│   └── utils.js        # Helper functions (Time formatting)
+│   └── cardService.js  # File System CRUD operations
 ├── public/
-│   ├── images/         # Optimized assets
-│   └── music/          # Audio files
-└── project_context/    # Documentation (THIS FOLDER)
+│   └── uploads/        # User uploaded media
+└── project_context/    # Documentation
 ```
 
 ## 3. Data Strategy
--  **Content Separatation**: All text/images should be pulled from a JSON/Object structure (in `lib/data.js`). This makes switching from "Wedding" to "Graduation" easy by just swapping the data object passed to components.
+-  **JSON Storage**: Each event is stored as a separate JSON file in `data/{id}.json`.
+-  **Schema**: Flexible JSON structure containing configuration (theme, colors) and content sections (hero, story, etc.).
+-  **CRUD**: `cardService.js` manages file reading/writing safely.
 
 ## 4. Theming Strategy
--  Use CSS Variables in `globals.css` for easy theme switching.
-```css
-:root {
-  /* Default (Wedding) */
-  --color-primary: #d4a373;
-  --color-bg: #fefae0;
-  --font-heading: 'Great Vibes', cursive;
-}
-
-[data-theme='graduation'] {
-  --color-primary: #2d6a4f;
-  --color-bg: #ffffff;
-  --font-heading: 'Cinzel', serif;
-}
+-  **Dynamic HSL Variables**: `globals.css` defines base themes using HSL.
+-  **Tailwind Integration**: `tailwind.config.js` maps `primary`, `secondary`, etc. to these CSS variables (`var(--color-primary)`).
+-  **Runtime Switching**: The Admin panel updates the `theme` property, which applies a `data-theme` attribute for instant style switching.
 ```

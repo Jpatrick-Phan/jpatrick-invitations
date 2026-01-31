@@ -6,8 +6,11 @@ A high-end, responsive, and customizable online invitation platform. Initially t
 
 ## 2. User Stories
 ### Admin (Host)
-- As an admin, I want to access a private dashboard (`/admin`).
-- As an admin, I want to edit text content (Names, Dates, Stories) via a form.
+- As an admin, I want to access a private dashboard (`/admin`) protected by a PIN code.
+- As an admin, I want to manage multiple event cards (Wedding, Graduation, etc.) from a single dashboard.
+- As an admin, I want to edit text content (Names, Dates, Stories) via a visual form builder.
+- As an admin, I want to upload and manage images/music via a built-in **Media Library**.
+- As an admin, I want to perform advanced edits using a **Raw JSON Editor** (Source Code).
 - As an admin, I want to toggle features (e.g., turn off "Money Box").
 - As an admin, I want to switch themes (Wedding <-> Graduation) to preview.
 - As an admin, I want to see the changes immediately on the main site.
@@ -15,14 +18,17 @@ A high-end, responsive, and customizable online invitation platform. Initially t
 ### Guest (End User)
 - As a guest, I want to open the invitation on my phone and see a beautiful, smooth opening animation.
 - As a guest, I want to clearly see the "Who, When, Where" details immediately.
+- As a guest, I want to enter a **Password** if the event is private.
+- As a guest, I want to see my name personally addressed (e.g., "Dear Tuan") if provided in the link.
 - As a guest, I want to easily navigate to the venue using Google Maps integration.
 - As a guest, I want to view a photo gallery of the couple/graduate.
 - As a guest, I want to send an RSVP so the host knows I'm coming.
 - As a guest, I want to send a congratulatory message or gift (money transfer) easily.
 
 ### Host (Admin/Config)
-- As a host, I want to easily change the text and images to fit my event (Wedding vs. Graduation).
-- As a host, I want to toggle features (e.g., hide the "Money Box" if not needed).
+- As a host, I want to set visibility levels (**Public/Private**) for my cards.
+- As a host, I want to set a **Password** for private events.
+- As a host, I want to easily copy an existing card's structure to create a new one (JSON Copy/Paste).
 
 ## 3. Functional Requirements
 1.  **Hero Section**: Full-screen, emotional impact (Video/High-res Image), Animated Intro.

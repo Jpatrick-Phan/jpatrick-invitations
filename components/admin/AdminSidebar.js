@@ -1,5 +1,5 @@
 'use client';
-import { Eye, EyeOff, LayoutTemplate, Calendar, BookOpen, Image as ImageIcon, Gift, Settings } from 'lucide-react';
+import { Eye, EyeOff, LayoutTemplate, Calendar, BookOpen, Image as ImageIcon, Gift, Settings, Code } from 'lucide-react';
 
 const SECTIONS = [
     { id: 'config', label: 'Global Settings', icon: Settings },
@@ -8,6 +8,7 @@ const SECTIONS = [
     { id: 'story', label: 'Our Story', icon: BookOpen },
     { id: 'gallery', label: 'Photo Gallery', icon: ImageIcon },
     { id: 'rsvp', label: 'RSVP & Gifts', icon: Gift },
+    { id: 'source', label: 'Source Code', icon: Code },
 ];
 
 export default function AdminSidebar({ activeSection, onSelectSection, data, onToggleVisibility }) {
