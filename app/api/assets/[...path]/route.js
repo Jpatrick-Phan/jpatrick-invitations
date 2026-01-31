@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
-import mime from 'mime'; // Need to check if available, otherwise manual map
 
 export async function GET(request, { params }) {
     // Route: /api/assets/cardId/filename.ext
