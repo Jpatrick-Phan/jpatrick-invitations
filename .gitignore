@@ -40,7 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local uploads
-public/uploads
-data/*.json
-project_context/
+# local
+/data
+/project_context
