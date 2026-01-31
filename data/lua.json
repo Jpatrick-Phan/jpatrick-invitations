@@ -1,0 +1,20 @@
+{
+  "theme": "wedding",
+  "music": "",
+  "hero": {
+    "title": "New Event",
+    "names": "Lụa",
+    "date": "Date",
+    "image": ""
+  },
+  "eventDetails": {
+    "time": "",
+    "location": "",
+    "mapUrl": ""
+  },
+  "story": [],
+  "config": {
+    "enabled": true,
+    "primaryColor": "#F59E0B"
+  }
+}

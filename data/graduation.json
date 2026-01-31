@@ -1,0 +1,45 @@
+{
+  "theme": "graduation",
+  "music": "",
+  "hero": {
+    "enabled": true,
+    "title": "Class of 2026",
+    "names": "Sarah Johnson",
+    "date": "June 20, 2026",
+    "image": "/images/grad-hero.jpg"
+  },
+  "eventDetails": {
+    "enabled": true,
+    "time": "09:00 AM",
+    "location": "University Main Auditorium",
+    "mapUrl": "https://maps.google.com/?q=University+Main+Auditorium"
+  },
+  "story": {
+    "enabled": true,
+    "items": [
+      {
+        "id": 1,
+        "year": "2022",
+        "title": "Freshman Year",
+        "description": "Started the journey with excitement..."
+      },
+      {
+        "id": 2,
+        "year": "2026",
+        "title": "Transformation",
+        "description": "Ready to take on the world..."
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "items": []
+  },
+  "rsvp": {
+    "enabled": true
+  },
+  "config": {
+    "music": "/uploads/[Vietsub+Lyrics]-I-Do---911.mp3",
+    "primaryColor": "#FF0000"
+  }
+}

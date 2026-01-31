@@ -1,0 +1,42 @@
+.container {
+    padding: 5rem 1rem;
+    background-color: var(--color-secondary);
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('/images/wedding-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Parallax effect */
+}
+
+.wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.tab {
+    background: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: var(--color-text-light);
+}
+
+.tab.active {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+}
