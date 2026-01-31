@@ -1,0 +1,58 @@
+{
+  "theme": "wedding",
+  "music": "/music/Alan Walker - Faded.mp3",
+  "hero": {
+    "enabled": true,
+    "title": "We Are Getting Married",
+    "names": "Sarah & Michael",
+    "date": "December 15, 2026",
+    "image": "/images/wedding-hero.jpg"
+  },
+  "eventDetails": {
+    "enabled": true,
+    "time": "10:30 AM",
+    "location": "The Grand Palace Hall, City Center",
+    "mapUrl": "https://maps.google.com/?q=The+Grand+Palace+Hall"
+  },
+  "story": {
+    "enabled": true,
+    "items": [
+      {
+        "id": 1,
+        "year": "2018",
+        "title": "First Met",
+        "description": "We met at the university library..."
+      },
+      {
+        "id": 2,
+        "year": "2021",
+        "title": "The Proposal",
+        "description": "Under the stars in Paris..."
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "items": [
+      {
+        "url": "/images/gallery1.jpg",
+        "caption": "Our Trip"
+      },
+      {
+        "url": "/images/gallery2.jpg",
+        "caption": "Family"
+      },
+      {
+        "url": "/images/gallery3.jpg",
+        "caption": "The Ring"
+      }
+    ]
+  },
+  "rsvp": {
+    "enabled": true
+  },
+  "config": {
+    "visibility": "private",
+    "password": "1234"
+  }
+}
